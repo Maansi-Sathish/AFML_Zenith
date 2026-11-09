@@ -2,7 +2,7 @@
 import os, csv, time, random, subprocess
 import numpy as np, torch, torch.nn as nn, pynvml
 import measure
-from models2 import build_model, count_params
+from models-2 import build_model, count_params
 os.makedirs("results", exist_ok=True)
 try:
     COMMIT=subprocess.check_output(["git","-C",os.path.dirname(os.path.abspath(__file__)),"rev-parse","--short","HEAD"],text=True).strip()
