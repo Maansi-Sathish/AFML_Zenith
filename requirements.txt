@@ -1,5 +1,5 @@
-torch==X.Y.Z
-ncps==X.Y.Z
-numpy==X.Y.Z
-pynvml==X.Y.Z
-codecarbon==X.Y.Z
+numpy>=1.24
+torch>=2.0
+nvidia-ml-py>=12.0
+codecarbon>=2.3
+ncps>=1.0
