@@ -202,19 +202,30 @@ def train(args):
         p = (step - warmup) / max(1, total_steps - warmup)
         return args.lr * (0.1 + 0.9 * 0.5 * (1 + math.cos(math.pi * p)))
 
+    ckpt_path = os.path.join(args.out_dir, "ckpt_full.pt")
+    ckpt_every = max(1, args.ckpt_every_tokens // tok_per_step)
+    start_step, train_time0, best_ppl0, resumed = 1, 0.0, float("inf"), False
+    if args.resume and os.path.exists(ckpt_path):
+        ck = torch.load(ckpt_path, map_location=device, weights_only=False)
+        model.load_state_dict(ck["model"]); opt.load_state_dict(ck["opt"]); scaler.load_state_dict(ck["scaler"])
+        rng.bit_generator.state = ck["rng"]
+        start_step, train_time0, best_ppl0, resumed = ck["step"] + 1, ck["train_time"], ck["best_ppl"], True
+        print(f"RESUMED from step {ck['step']} ({ck['step'] * tok_per_step / 1e6:.1f}M tokens)")
+
     log_path = os.path.join(args.out_dir, "log.csv")
-    logf = open(log_path, "w", newline="")
+    logf = open(log_path, "a" if resumed else "w", newline="")
     writer = csv.writer(logf)
-    writer.writerow(["step", "tokens_seen", "train_loss", "val_loss", "val_ppl", "train_time_s", "peak_mem_mb"])
+    if not resumed:
+        writer.writerow(["step", "tokens_seen", "train_loss", "val_loss", "val_ppl", "train_time_s", "peak_mem_mb"])
 
     model.train()
     if device == "cuda":
         torch.cuda.reset_peak_memory_stats()
         torch.cuda.synchronize()
-    train_time, t_last, run_loss, run_n = 0.0, time.time(), 0.0, 0
-    best_ppl = float("inf")
+    train_time, t_last, run_loss, run_n = train_time0, time.time(), 0.0, 0
+    best_ppl = best_ppl0
 
-    for step in range(1, total_steps + 1):
+    for step in range(start_step, total_steps + 1):
         for g in opt.param_groups:
             g["lr"] = lr_at(step)
         x, y = get_batch(train_arr, args.batch, args.seq_len, rng, device)
@@ -251,6 +262,16 @@ def train(args):
                 torch.cuda.synchronize()
             t_last = time.time()
 
+        if step % ckpt_every == 0 and step != total_steps:   # crash-safe full checkpoint (time excluded)
+            if device == "cuda":
+                torch.cuda.synchronize()
+            train_time += time.time() - t_last
+            torch.save(dict(model=model.state_dict(), opt=opt.state_dict(), scaler=scaler.state_dict(),
+                            rng=rng.bit_generator.state, step=step, train_time=train_time,
+                            best_ppl=best_ppl), ckpt_path + ".tmp")
+            os.replace(ckpt_path + ".tmp", ckpt_path)
+            t_last = time.time()
+
     logf.close()
     t_loss, t_ppl = evaluate(model, test_arr, args.seq_len, 64, device, use_amp, args.eval_tokens)
     result = dict(arch=args.arch, params=n_params, precision=args.precision, seq_len=args.seq_len,
@@ -278,6 +299,8 @@ def get_args(argv=None):
     ap.add_argument("--eval_tokens", type=int, default=1_000_000)
     ap.add_argument("--precision", choices=["fp16", "fp32"], default="fp16")
     ap.add_argument("--seed", type=int, default=1337)
+    ap.add_argument("--resume", action="store_true", help="resume from ckpt_full.pt in out_dir if present")
+    ap.add_argument("--ckpt_every_tokens", type=int, default=1_000_000, help="full checkpoint interval (for --resume)")
     return ap.parse_args(argv)
 
 
