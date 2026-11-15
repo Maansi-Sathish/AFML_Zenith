@@ -1,0 +1,4 @@
+model,throughput,latency_ms,peak_memory_mb
+LSTM,378105.46,21.6659,325.267
+Transformer,457278.68,17.9147,335.562
+CfC,11005.39,744.3624,326.916

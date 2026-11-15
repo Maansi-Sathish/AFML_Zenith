@@ -1,0 +1,4 @@
+model,energy_per_million_tokens_j
+CfC,464.189
+LSTM,107.656
+Transformer,81.961

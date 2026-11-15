@@ -1,0 +1,4 @@
+model,training_time_s,test_quality,quality_metric,training_energy_j,peak_memory_mb
+LSTM,113.58,89.04,Test accuracy,7466.22,520.83
+Transformer,77.78,90.53,Test accuracy,5111.28,288.97
+CfC,1611.94,67.59,Test accuracy,53891.84,93.52

@@ -1,0 +1,4 @@
+model,training_time_s,test_quality,quality_metric
+LSTM,603.29,49.8336,Test perplexity
+Transformer,573.72,15.3448,Test perplexity
+CfC,15866.656,45.3247,Test perplexity
