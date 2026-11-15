@@ -1,0 +1,24 @@
+
+
+# Large datasets and model checkpoints
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.ckpt
+
+# Archives and temporary files
+*.zip
+*.tar
+*.gz
+__pycache__/
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Secrets
+.env
+.env.*
+!.env.example
+*token*
+*secret*

@@ -1,0 +1,16 @@
+{
+  "arch": "cfc",
+  "params": 9946560,
+  "precision": "fp16",
+  "seq_len": 256,
+  "batch": 32,
+  "tokens_trained": 59998208,
+  "train_time_s": 15866.656381607056,
+  "best_val_ppl": 45.5940942814644,
+  "test_ppl": 45.324701806124594,
+  "seed": 1337,
+  "d_model": 320,
+  "n_layer": 6,
+  "n_head": 5,
+  "lr": 0.001
+}
