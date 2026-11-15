@@ -118,12 +118,6 @@ AFML_Zenith/
 ├── p3_pipeline.py
 ├── requirements.txt
 │
-├── vaishali_lmsys/
-│   ├── prep_data.py
-│   ├── train_text.py
-│   ├── bench_seqlen.py
-│   └── measure_updated.py
-│
 ├── results/
 │   ├── text/
 │   │   ├── ppl_curves.png
