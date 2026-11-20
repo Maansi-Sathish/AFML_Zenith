@@ -1,0 +1,20 @@
+/usr/local/lib/python3.13/dist-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                               aten::mm         1.13%       4.221ms         1.86%       6.948ms      40.632us     175.638ms        49.55%     175.638ms       1.027ms           171  
+                                   volta_sgemm_64x64_nn         0.00%       0.000us         0.00%       0.000us       0.000us      60.091ms        16.95%      60.091ms       1.054ms            57  
+                                   volta_sgemm_64x64_nt         0.00%       0.000us         0.00%       0.000us       0.000us      46.626ms        13.15%      46.626ms       1.196ms            39  
+                                            aten::addmm         0.56%       2.070ms         0.78%       2.925ms      54.165us      38.484ms        10.86%      38.484ms     712.673us            54  
+                    aten::_efficient_attention_backward         0.14%     521.280us         2.37%       8.843ms     491.275us      38.301ms        10.81%      41.910ms       2.328ms            18  
+fmha_cutlassB_f32_aligned_64x64_k64_dropout_sm75(PyT...         0.00%       0.000us         0.00%       0.000us       0.000us      38.301ms        10.81%      38.301ms       2.128ms            18  
+                                 volta_sgemm_128x128_tn         0.00%       0.000us         0.00%       0.000us       0.000us      31.101ms         8.77%      31.101ms       1.481ms            21  
+                                   volta_sgemm_64x64_tn         0.00%       0.000us         0.00%       0.000us       0.000us      23.312ms         6.58%      23.312ms     647.556us            36  
+                                  volta_sgemm_128x64_nt         0.00%       0.000us         0.00%       0.000us       0.000us      22.746ms         6.42%      22.746ms     631.843us            36  
+                                            aten::copy_         0.70%       2.617ms         5.56%      20.717ms      65.769us      17.471ms         4.93%      17.475ms      55.476us           315  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 372.831ms
+Self CUDA time total: 354.478ms
+
+transformer/optimized L=256 B=16: CUDA kernel launches over 3 steps = 1503

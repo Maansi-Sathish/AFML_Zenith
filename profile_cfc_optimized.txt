@@ -1,0 +1,20 @@
+/usr/local/lib/python3.13/dist-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     777.212ms        28.28%     777.212ms       9.946us         78141  
+                                               aten::mm        10.26%     884.085ms        14.67%        1.264s      27.412us     759.199ms        27.63%     759.199ms      16.470us         46095  
+                                             aten::add_         4.88%     420.503ms        10.34%     890.500ms      12.919us     753.985ms        27.44%     753.985ms      10.938us         68931  
+                                            aten::addmm         7.47%     643.784ms         9.67%     833.240ms      36.160us     469.749ms        17.09%     469.797ms      20.388us         23043  
+void gemmSN_TN_kernel<float, 128, 16, 2, 4, 8, 9, fa...         0.00%       0.000us         0.00%       0.000us       0.000us     468.505ms        17.05%     468.505ms      20.334us         23040  
+void gemmSN_NN_kernel<float, 256, 4, 2, 8, 4, 4, fal...         0.00%       0.000us         0.00%       0.000us       0.000us     441.707ms        16.07%     441.707ms      19.171us         23040  
+                                  volta_sgemm_128x32_nt         0.00%       0.000us         0.00%       0.000us       0.000us     263.660ms         9.59%     263.660ms      11.444us         23040  
+                                              aten::sum         3.80%     327.100ms         5.88%     506.437ms      21.978us     253.332ms         9.22%     253.332ms      10.994us         23043  
+void at::native::reduce_kernel<128, 4, at::native::R...         0.00%       0.000us         0.00%       0.000us       0.000us     253.328ms         9.22%     253.328ms      10.994us         23043  
+                                            aten::fill_         0.32%      27.497ms         0.81%      69.527ms      15.001us     143.536ms         5.22%     143.536ms      30.968us          4635  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 8.615s
+Self CUDA time total: 2.748s
+
+cfc/optimized L=256 B=16: CUDA kernel launches over 3 steps = 290346

@@ -1,0 +1,20 @@
+/usr/local/lib/python3.13/dist-packages/torch/profiler/profiler.py:224: UserWarning: Warning: Profiler clears events at the end of each cycle.Only events from the current cycle will be reported.To keep events across cycles, set acc_events=True.
+  _warn_once(
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                              aten::_cudnn_rnn_backward         8.04%      58.048ms        47.96%     346.140ms     115.380ms     654.387ms        56.35%     655.313ms     218.438ms             3  
+                                       aten::_cudnn_rnn         4.16%      30.035ms        10.41%      75.121ms      25.040ms     424.256ms        36.54%     424.403ms     141.468ms             3  
+                         volta_sgemm_64x32_sliced1x4_tn         0.00%       0.000us         0.00%       0.000us       0.000us     314.056ms        27.05%     314.056ms      68.155us          4608  
+                         volta_sgemm_64x32_sliced1x4_nn         0.00%       0.000us         0.00%       0.000us       0.000us     279.989ms        24.11%     279.989ms      60.761us          4608  
+                                   volta_sgemm_64x64_nt         0.00%       0.000us         0.00%       0.000us       0.000us     148.972ms        12.83%     148.972ms       3.820ms            39  
+                                 volta_sgemm_128x128_nn         0.00%       0.000us         0.00%       0.000us       0.000us      73.564ms         6.34%      73.564ms     153.259us           480  
+void cublasLt::splitKreduce_kernel<32, 16, int, floa...         0.00%       0.000us         0.00%       0.000us       0.000us      69.194ms         5.96%      69.194ms      13.348us          5184  
+void LSTM_elementWise_bp1<float, float, float>(int, ...         0.00%       0.000us         0.00%       0.000us       0.000us      61.947ms         5.33%      61.947ms      13.443us          4608  
+void elemWiseRNNcell<float, float, float, (cudnnRNNM...         0.00%       0.000us         0.00%       0.000us       0.000us      59.468ms         5.12%      59.468ms      12.905us          4608  
+                                               aten::mm         0.08%     567.921us         0.20%       1.447ms      80.375us      58.040ms         5.00%      58.040ms       3.224ms            18  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 721.684ms
+Self CUDA time total: 1.161s
+
+lstm/optimized L=256 B=16: CUDA kernel launches over 3 steps = 25266
